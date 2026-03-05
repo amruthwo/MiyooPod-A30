@@ -75,28 +75,36 @@ jobs:
           cp ../libs/libSDL2_mixer-2.0.so.0 App/MiyooPod/libs/libSDL2_mixer-2.0.so.0
           echo "Patches applied"
 
-      - name: Install cross-compiler and SDL2 headers
+      - name: Install cross-compiler and deps
         if: steps.check.outputs.needed == 'true'
         run: |
           sudo dpkg --add-architecture armhf
-          # Add armhf ports mirror
-          printf 'deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports noble main universe\n' | sudo tee /etc/apt/sources.list.d/armhf-ports.list
-          printf 'deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports noble-updates main universe\n' | sudo tee -a /etc/apt/sources.list.d/armhf-ports.list
-          # Update ignoring errors from amd64-only mirrors that don't have armhf
-          sudo apt-get update --ignore-missing 2>&1 | grep -v "404\|Ign" || true
-          sudo apt-get install -y gcc-arm-linux-gnueabihf libsdl2-dev:armhf libmpg123-dev:armhf libvorbis-dev:armhf
+          sudo printf 'deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports noble main universe multiverse restricted\ndeb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports noble-updates main universe multiverse restricted\ndeb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports noble-security main universe multiverse restricted\n' > /tmp/armhf-ports.list
+          sudo cp /tmp/armhf-ports.list /etc/apt/sources.list.d/armhf-ports.list
+          sudo apt-get update --ignore-missing 2>&1 | tail -3 || true
+          sudo apt-get install -y --no-install-recommends gcc-arm-linux-gnueabihf libsdl2-dev libsdl2-2.0-0:armhf libmpg123-0:armhf libvorbis0a:armhf libvorbisfile3:armhf
+
+      - name: Set up CGO include and lib paths
+        if: steps.check.outputs.needed == 'true'
+        run: |
           sudo mkdir -p /root/include/SDL2 /root/lib
           sudo cp /usr/include/SDL2/*.h /root/include/SDL2/
+          sudo cp upstream/libs/libSDL2_mixer.so /root/lib/ 2>/dev/null || true
           sudo cp /usr/lib/arm-linux-gnueabihf/libSDL2*.so* /root/lib/ 2>/dev/null || true
+          sudo cp /usr/lib/arm-linux-gnueabihf/libmpg123*.so* /root/lib/ 2>/dev/null || true
+          sudo cp /usr/lib/arm-linux-gnueabihf/libvorbis*.so* /root/lib/ 2>/dev/null || true
+          find /root/include/SDL2 -name "SDL_mixer.h" || echo "WARNING: SDL_mixer.h not found"
 
-      - name: Copy SDL_mixer.h to build include path
+      - name: Copy SDL_mixer.h
         if: steps.check.outputs.needed == 'true'
         run: |
           MIXER_H=$(find / -name SDL_mixer.h 2>/dev/null | head -1)
           if [ -n "$MIXER_H" ]; then
             sudo cp "$MIXER_H" /root/include/SDL2/SDL_mixer.h
+            echo "Copied $MIXER_H"
           else
-            echo "WARNING: SDL_mixer.h not found"
+            echo "ERROR: SDL_mixer.h not found"
+            exit 1
           fi
 
       - name: Run build-inject
