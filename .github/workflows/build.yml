@@ -87,6 +87,8 @@ jobs:
           sudo chmod 755 /root /root/include /root/include/SDL2 /root/lib
           # Headers from extracted armhf debs
           sudo cp /tmp/armhf-extract/root/usr/include/SDL2/*.h /root/include/SDL2/ 2>/dev/null || true
+          # SDL_config.h redirects to arch-specific _real_SDL_config.h - copy it
+          sudo cp /tmp/armhf-extract/root/usr/include/arm-linux-gnueabihf/SDL2/_real_SDL_config.h /root/include/SDL2/_real_SDL_config.h 2>/dev/null ||             sudo cp /tmp/armhf-extract/root/usr/lib/arm-linux-gnueabihf/SDL2/SDL_config.h /root/include/SDL2/_real_SDL_config.h 2>/dev/null ||             find /tmp/armhf-extract/root -name "_real_SDL_config.h" -exec sudo cp {} /root/include/SDL2/ \;
           # Libs from extracted armhf debs
           sudo cp /usr/lib/arm-linux-gnueabihf/libSDL2*.so* /root/lib/ 2>/dev/null || true
           sudo cp /usr/lib/arm-linux-gnueabihf/libmpg123*.so* /root/lib/ 2>/dev/null || true
