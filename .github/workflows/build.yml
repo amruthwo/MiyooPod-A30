@@ -78,10 +78,7 @@ jobs:
 
       - name: Install cross-compiler and armhf SDL2
         if: steps.check.outputs.needed == 'true'
-        run: |
-          sudo dpkg --add-architecture armhf
-          sudo apt-get update || true
-          sudo apt-get install -y gcc-arm-linux-gnueabihf libsdl2-dev:armhf libmpg123-dev:armhf libvorbis-dev:armhf
+        run: sudo bash scripts/setup-armhf.sh
 
       - name: Set up CGO paths
         if: steps.check.outputs.needed == 'true'
@@ -94,19 +91,9 @@ jobs:
           sudo cp /usr/lib/arm-linux-gnueabihf/libvorbis*.so* /root/lib/ 2>/dev/null || true
           sudo cp libs/libSDL2_mixer.so /root/lib/
           sudo cp libs/libSDL2_mixer-2.0.so.0 /root/lib/
-          ls /root/include/SDL2/ | head -5
-
-      - name: Copy SDL_mixer.h
-        if: steps.check.outputs.needed == 'true'
-        run: |
           MIXER_H=$(find / -name SDL_mixer.h 2>/dev/null | head -1)
-          if [ -n "$MIXER_H" ]; then
-            sudo cp "$MIXER_H" /root/include/SDL2/SDL_mixer.h
-            echo "Copied SDL_mixer.h from $MIXER_H"
-          else
-            echo "ERROR: SDL_mixer.h not found"
-            exit 1
-          fi
+          if [ -n "$MIXER_H" ]; then sudo cp "$MIXER_H" /root/include/SDL2/SDL_mixer.h; fi
+          ls /root/include/SDL2/ | head -5
 
       - name: Run build-inject
         if: steps.check.outputs.needed == 'true'
