@@ -1,6 +1,17 @@
 --- a/src/ui.go
 +++ b/src/ui.go
-@@ -962,7 +962,7 @@
+@@ -953,16 +953,16 @@
+ 	dc.SetFontFace(app.FontSmall)
+ 	dc.SetHexColor("#CCCCCC")
+ 	lockKeyName := app.getLockKeyName()
+-	dc.DrawStringAnchored(fmt.Sprintf("Press POWER or double-press %s to unlock", lockKeyName), centerX, centerY+15, 0.5, 0.5)
++	dc.DrawStringAnchored(fmt.Sprintf("Double-press %s to unlock", lockKeyName), centerX, centerY+15, 0.5, 0.5)
+ 
+ 	// Force quit hint
+ 	dc.SetHexColor("#999999")
+-	dc.DrawStringAnchored("Hold POWER for 5s to force quit", centerX, centerY+40, 0.5, 0.5)
++	dc.DrawStringAnchored("Hold MENU for 5s to force quit", centerX, centerY+40, 0.5, 0.5)
+ }
  
  // getBrightness reads the current PWM duty_cycle (brightness level)
  func getBrightness() int {
