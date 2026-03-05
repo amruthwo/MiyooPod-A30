@@ -85,15 +85,16 @@ jobs:
         run: |
           sudo mkdir -p /root/include/SDL2 /root/lib
           sudo chmod 755 /root /root/include /root/include/SDL2 /root/lib
-          sudo cp /usr/include/SDL2/*.h /root/include/SDL2/
+          # Headers from extracted armhf debs
+          sudo cp /tmp/armhf-extract/root/usr/include/SDL2/*.h /root/include/SDL2/ 2>/dev/null || true
+          # Libs from extracted armhf debs
           sudo cp /usr/lib/arm-linux-gnueabihf/libSDL2*.so* /root/lib/ 2>/dev/null || true
           sudo cp /usr/lib/arm-linux-gnueabihf/libmpg123*.so* /root/lib/ 2>/dev/null || true
           sudo cp /usr/lib/arm-linux-gnueabihf/libvorbis*.so* /root/lib/ 2>/dev/null || true
           sudo cp libs/libSDL2_mixer.so /root/lib/
           sudo cp libs/libSDL2_mixer-2.0.so.0 /root/lib/
-          MIXER_H=$(find / -name SDL_mixer.h 2>/dev/null | head -1)
-          if [ -n "$MIXER_H" ]; then sudo cp "$MIXER_H" /root/include/SDL2/SDL_mixer.h; fi
           ls /root/include/SDL2/ | head -5
+          ls /root/lib/libSDL2* | head -5
 
       - name: Run build-inject
         if: steps.check.outputs.needed == 'true'
