@@ -93,16 +93,16 @@ jobs:
       - name: Set up CGO paths
         if: steps.check.outputs.needed == 'true'
         run: |
-          sudo mkdir -p /root/include/SDL2 /root/lib
-          sudo cp /usr/include/SDL2/*.h /root/include/SDL2/
-          sudo cp ../libs/libSDL2_mixer.so /root/lib/ 2>/dev/null || true
-          sudo cp /usr/lib/arm-linux-gnueabihf/libSDL2*.so* /root/lib/ 2>/dev/null || true
-          # Get SDL_mixer.h from our pre-built lib
+          mkdir -p $HOME/sdl2-include/SDL2 $HOME/sdl2-lib
+          cp /usr/include/SDL2/*.h $HOME/sdl2-include/SDL2/
+          cp libs/libSDL2_mixer.so $HOME/sdl2-lib/ 2>/dev/null || true
+          cp /usr/lib/arm-linux-gnueabihf/libSDL2*.so* $HOME/sdl2-lib/ 2>/dev/null || true
           MIXER_H=$(find / -name SDL_mixer.h 2>/dev/null | head -1)
           if [ -n "$MIXER_H" ]; then
-            sudo cp "$MIXER_H" /root/include/SDL2/SDL_mixer.h
+            cp "$MIXER_H" $HOME/sdl2-include/SDL2/SDL_mixer.h
           fi
-        working-directory: upstream
+          echo "SDL2_INCLUDE=$HOME/sdl2-include" >> $GITHUB_ENV
+          echo "SDL2_LIB=$HOME/sdl2-lib" >> $GITHUB_ENV
 
       - name: Run build-inject
         if: steps.check.outputs.needed == 'true'
@@ -112,6 +112,8 @@ jobs:
         if: steps.check.outputs.needed == 'true'
         run: |
           cd upstream
+          CGO_CFLAGS="-I${{ env.SDL2_INCLUDE }}" \
+          CGO_LDFLAGS="-L${{ env.SDL2_LIB }}" \
           CC=arm-linux-gnueabihf-gcc \
           CGO_ENABLED=1 \
           GOARCH=arm \
