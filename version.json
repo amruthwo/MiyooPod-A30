@@ -2,6 +2,6 @@
   "version": "0.1.0",
   "checksum": "",
   "url": "https://github.com/amruthwo/MiyooPod-A30/releases/download/v0.1.0-68c3d50/MiyooPod-A30-v0.1.0.zip",
-  "size": 19700139,
-  "changelog": "A30 port: direct framebuffer rendering, ALSA audio, letter-skip navigation, seek-on-release, sleep/wake recovery."
+  "size": 0,
+  "changelog": "See release notes at https://github.com/amruthwo/MiyooPod-A30/releases/tag/v0.1.0-68c3d50"
 }
