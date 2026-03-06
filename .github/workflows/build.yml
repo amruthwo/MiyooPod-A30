@@ -101,7 +101,7 @@ jobs:
         run: |
           cd upstream
           CGO_CFLAGS="-I/usr/include/arm-linux-gnueabihf" \
-          CGO_LDFLAGS="-L/usr/lib/arm-linux-gnueabihf" \
+          CGO_LDFLAGS="-L/tmp/sdl-libs -L/usr/lib/arm-linux-gnueabihf -Wl,-rpath-link,/tmp/sdl-libs" \
           CC=arm-linux-gnueabihf-gcc \
           CGO_ENABLED=1 \
           GOARCH=arm \
