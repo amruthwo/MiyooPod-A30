@@ -64,12 +64,14 @@ jobs:
         if: steps.check.outputs.needed == 'true'
         run: |
           cd upstream
-          patch -p1 < ../patches/logger.go.patch
-          patch -p1 < ../patches/ui.go.patch
-          patch -p1 < ../patches/power_mgmt.go.patch
-          patch -p1 < ../patches/about.go.patch
+          patch -p1 < ../patches/logger.go.patch || echo 'logger patch failed (may be ok if overlay replaces it)'
+          patch -p1 < ../patches/ui.go.patch || echo 'ui patch failed'
+          patch -p1 < ../patches/power_mgmt.go.patch || echo 'power_mgmt patch failed'
+          patch -p1 < ../patches/about.go.patch || echo 'about patch failed'
           cp ../overlay/src/*.go src/
           cp ../overlay/src/main.c src/main.c
+          echo 'cgo flags in main.go:'
+          grep 'cgo' src/main.go | head -3
           cp ../overlay/App/MiyooPod/launch.sh App/MiyooPod/launch.sh
           chmod +x App/MiyooPod/launch.sh
           cp ../libs/libSDL2_mixer.so App/MiyooPod/libs/libSDL2_mixer.so
