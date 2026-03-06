@@ -69,7 +69,7 @@ jobs:
           patch -p1 < ../patches/power_mgmt.go.patch || echo 'power_mgmt patch failed'
           patch -p1 < ../patches/about.go.patch || echo 'about patch failed'
           cp ../overlay/src/*.go src/
-          cp ../overlay/src/main.c src/main.c
+          cp ../overlay/src/*.c src/
           echo 'cgo flags in main.go:'
           grep 'cgo' src/main.go | head -3
           cp ../overlay/App/MiyooPod/launch.sh App/MiyooPod/launch.sh
