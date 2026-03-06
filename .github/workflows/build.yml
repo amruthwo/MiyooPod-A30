@@ -108,7 +108,7 @@ jobs:
             -e CGO_CFLAGS="-I/usr/include/arm-linux-gnueabihf" \
             -e CGO_LDFLAGS="-L/tmp/sdl-libs -L/usr/lib/arm-linux-gnueabihf -Wl,-rpath-link,/tmp/sdl-libs" \
             a30-cross sh -c \
-            "mkdir -p /tmp/sdl-libs && cp /build/App/MiyooPod/libs/libSDL2_mixer*.so* /tmp/sdl-libs/ && cd /build && go build -a -o App/MiyooPod/MiyooPod src/*.go"
+            "mkdir -p /tmp/sdl-libs && cp /build/App/MiyooPod/libs/libSDL2_mixer*.so* /tmp/sdl-libs/ && cd /build && go build -a -o App/MiyooPod/MiyooPod src/*.go && cd /build/updater && go build -a -o /build/App/MiyooPod/updater_new ."
 
       - name: Update version.json
         if: steps.check.outputs.needed == 'true'
