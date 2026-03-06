@@ -6,7 +6,7 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <linux/fb.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 // Forward declarations for Go functions
 extern void GoLogMsg(char* msg);
 extern void DetectDevice(int width, int height);

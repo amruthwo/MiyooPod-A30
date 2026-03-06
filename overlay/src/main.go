@@ -2,7 +2,7 @@ package main
 
 /*
 #cgo CFLAGS: -I/usr/include/arm-linux-gnueabihf -I/usr/include/arm-linux-gnueabihf/SDL2 -O2 -w -D_GNU_SOURCE=1 -D_REENTRANT
-#cgo LDFLAGS: -L/usr/lib/arm-linux-gnueabihf -Wl,-rpath-link,/usr/lib/arm-linux-gnueabihf -Wl,-rpath,'$ORIGIN' -Wl,--unresolved-symbols=ignore-in-shared-libs -lSDL2 -lSDL2_mixer -lpthread
+#cgo LDFLAGS: -L/build/App/MiyooPod/libs -L/usr/lib/arm-linux-gnueabihf -Wl,-rpath-link,/build/App/MiyooPod/libs -Wl,-rpath-link,/usr/lib/arm-linux-gnueabihf -Wl,-rpath,'$ORIGIN' -Wl,--unresolved-symbols=ignore-in-shared-libs -lSDL2 -lSDL2_mixer -lpthread
 #include <stdlib.h>
 #include "main.c"
 #include "audio.c"
