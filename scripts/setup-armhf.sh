@@ -18,6 +18,8 @@ curl -L "$PORTS/universe/libs/libsdl2/libsdl2-dev_2.0.20+dfsg-2ubuntu1.22.04.1_a
 curl -L "$PORTS/main/m/mpg123/libmpg123-0_1.29.3-1build1_armhf.deb" -o libmpg123.deb
 curl -L "$PORTS/main/libv/libvorbis/libvorbis0a_1.3.7-1build2_armhf.deb" -o libvorbis.deb
 curl -L "$PORTS/main/libv/libvorbis/libvorbisfile3_1.3.7-1build2_armhf.deb" -o libvorbisfile.deb
+curl -L "$PORTS/universe/libs/sdl2-mixer/libsdl2-mixer-2.0-0_2.0.6+dfsg-3_armhf.deb" -o libsdl2-mixer.deb
+curl -L "$PORTS/universe/libs/sdl2-mixer/libsdl2-mixer-dev_2.0.6+dfsg-3_armhf.deb" -o libsdl2-mixer-dev.deb
 
 # Extract each deb
 for deb in *.deb; do
