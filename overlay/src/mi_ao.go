@@ -3,27 +3,21 @@ package main
 import (
 	"fmt"
 	"os/exec"
+	"strings"
 )
 
-// setMiAOVolume sets system volume using amixer (A30/SpruceOS ALSA)
-func setMiAOVolume(percent int) {
-	if percent < 0 {
-		percent = 0
-	}
-	if percent > 100 {
-		percent = 100
-	}
-
-	// Map 0-100% to 0-255 for 'Soft Volume Master'
-	raw := percent * 255 / 100
-
-	logMsg(fmt.Sprintf("DEBUG: Volume %d%% -> raw %d", percent, raw))
-
-	cmd := exec.Command("amixer", "sset", "Soft Volume Master", fmt.Sprintf("%d", raw))
-	if err := cmd.Run(); err != nil {
-		logMsg(fmt.Sprintf("ERROR: amixer volume set failed: %v", err))
-		return
-	}
-
-	logMsg(fmt.Sprintf("SUCCESS: amixer volume set: %d%% (raw %d)", percent, raw))
+// getAlsaVolume reads current Soft Volume Master level (0-100)
+func getAlsaVolume() int {
+        out, err := exec.Command("amixer", "sget", "Soft Volume Master").Output()
+        if err != nil {
+                return -1
+        }
+        s := string(out)
+        pct := 0
+        idx := strings.Index(s, "Front Left:")
+        if idx >= 0 {
+                fmt.Sscanf(s[idx:], "Front Left: %*d [%d%%]", &pct)
+        }
+        return pct
 }
+

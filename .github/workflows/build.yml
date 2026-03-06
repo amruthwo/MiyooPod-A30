@@ -68,8 +68,8 @@ jobs:
           patch -p1 < ../patches/ui.go.patch
           patch -p1 < ../patches/power_mgmt.go.patch
           patch -p1 < ../patches/about.go.patch
+          cp ../overlay/src/*.go src/
           cp ../overlay/src/main.c src/main.c
-          cp ../overlay/src/mi_ao.go src/mi_ao.go
           cp ../overlay/App/MiyooPod/launch.sh App/MiyooPod/launch.sh
           chmod +x App/MiyooPod/launch.sh
           cp ../libs/libSDL2_mixer.so App/MiyooPod/libs/libSDL2_mixer.so
