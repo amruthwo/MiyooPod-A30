@@ -70,6 +70,9 @@ jobs:
           patch -p1 < ../patches/about.go.patch || echo 'about patch failed'
           cp ../overlay/src/*.go src/
           cp ../overlay/src/*.c src/
+          # Copy bundled SDL_mixer to known path for cgo linking
+          mkdir -p /tmp/sdl-libs
+          cp ../libs/libSDL2_mixer*.so* /tmp/sdl-libs/
           echo 'cgo flags in main.go:'
           grep 'cgo' src/main.go | head -3
           cp ../overlay/App/MiyooPod/launch.sh App/MiyooPod/launch.sh
