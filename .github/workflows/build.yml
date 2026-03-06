@@ -113,6 +113,11 @@ jobs:
             a30-cross sh -c \
             "mkdir -p /tmp/sdl-libs && cp /build/App/MiyooPod/libs/libSDL2_mixer*.so* /tmp/sdl-libs/ && cd /build && go build -buildvcs=false -a -o App/MiyooPod/MiyooPod src/*.go && cd /build/updater && go build -buildvcs=false -a -o /build/App/MiyooPod/updater_new ."
 
+      - name: Update bundled SDL_mixer with 2.6+ version
+        if: steps.check.outputs.needed == 'true'
+        run: |
+          cp /usr/lib/arm-linux-gnueabihf/libSDL2_mixer-2.0.so.0 upstream/App/MiyooPod/libs/libSDL2_mixer-2.0.so.0
+          cp /usr/lib/arm-linux-gnueabihf/libSDL2_mixer-2.0.so.0 upstream/App/MiyooPod/libs/libSDL2_mixer.so
       - name: Update version.json
         if: steps.check.outputs.needed == 'true'
         run: |
