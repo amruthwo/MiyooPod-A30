@@ -119,8 +119,10 @@ jobs:
       - name: Update bundled SDL_mixer with 2.6+ version
         if: steps.check.outputs.needed == 'true'
         run: |
-          cp /usr/lib/arm-linux-gnueabihf/libSDL2_mixer-2.0.so.0 upstream/App/MiyooPod/libs/libSDL2_mixer-2.0.so.0
-          cp /usr/lib/arm-linux-gnueabihf/libSDL2_mixer-2.0.so.0 upstream/App/MiyooPod/libs/libSDL2_mixer.so
+          # Extract the bundled 2.6+ SDL_mixer from the overlay libs dir
+          cp overlay/libs/libSDL2_mixer-2.0.so.0 upstream/App/MiyooPod/libs/libSDL2_mixer-2.0.so.0
+          cp overlay/libs/libSDL2_mixer-2.0.so.0 upstream/App/MiyooPod/libs/libSDL2_mixer.so
+          ls -lh upstream/App/MiyooPod/libs/libSDL2_mixer*
       - name: Update version.json
         if: steps.check.outputs.needed == 'true'
         run: |
