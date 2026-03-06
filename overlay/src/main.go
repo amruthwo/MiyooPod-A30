@@ -1,8 +1,8 @@
 package main
 
 /*
-#cgo CFLAGS: -I/root/include/SDL2 -O2 -w -D_GNU_SOURCE=1 -D_REENTRANT
-#cgo LDFLAGS: -L/root/lib -Wl,-rpath-link,/root/lib -Wl,-rpath,'$ORIGIN' -Wl,--unresolved-symbols=ignore-in-shared-libs -lSDL2 -lSDL2_mixer -lpthread
+#cgo CFLAGS: -I/usr/include/arm-linux-gnueabihf -O2 -w -D_GNU_SOURCE=1 -D_REENTRANT
+#cgo LDFLAGS: -L/usr/lib/arm-linux-gnueabihf -Wl,-rpath-link,/usr/lib/arm-linux-gnueabihf -Wl,-rpath,'$ORIGIN' -Wl,--unresolved-symbols=ignore-in-shared-libs -lSDL2 -lSDL2_mixer -lpthread
 #include <stdlib.h>
 #include "main.c"
 #include "audio.c"
