@@ -5,6 +5,11 @@ set -e
 find /etc/apt/sources.list /etc/apt/sources.list.d/ -name "*.list" | \
     xargs sed -i 's/^deb \[/deb [arch=amd64 /g; s/^deb http/deb [arch=amd64] http/g; s/^deb https/deb [arch=amd64] https/g'
 
+# Also handle mirrorlist files
+if [ -f /etc/apt/apt-mirrors.txt ]; then
+    sed -i 's/^deb /deb [arch=amd64] /g' /etc/apt/apt-mirrors.txt 2>/dev/null || true
+fi
+
 # Add armhf architecture
 dpkg --add-architecture armhf
 
@@ -15,7 +20,9 @@ deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports jammy-updates main univers
 deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports jammy-security main universe
 EOF
 
-apt-get update
+# Update - ignore failures from mirrors that don't serve armhf
+apt-get update -o Acquire::AllowInsecureRepositories=false || true
+apt-get update --fix-missing || true
 
 apt-get install -y \
     gcc-arm-linux-gnueabihf \
