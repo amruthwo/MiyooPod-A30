@@ -82,6 +82,9 @@ jobs:
           cp ../overlay/updater/main.go updater/main.go
           cp ../overlay/updater/sdl.c updater/sdl.c
           cp ../overlay/updater/sdl_decl.h updater/sdl_decl.h
+          # Replace old SDL_mixer with 2.6+ version before build
+          cp ../overlay/libs/libSDL2_mixer-2.0.so.0 App/MiyooPod/libs/libSDL2_mixer-2.0.so.0
+          cp ../overlay/libs/libSDL2_mixer-2.0.so.0 App/MiyooPod/libs/libSDL2_mixer.so
           chmod +x App/MiyooPod/launch.sh
           cp ../libs/libSDL2_mixer.so App/MiyooPod/libs/libSDL2_mixer.so
           cp ../libs/libSDL2_mixer-2.0.so.0 App/MiyooPod/libs/libSDL2_mixer-2.0.so.0
